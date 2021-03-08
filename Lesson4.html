@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <script type="text/babel">
+      // 1.定義組件
+      // 簡單組件
+      // function Person(props) {
+      //   return (
+      //     <ul>
+      //           <li>姓名：{props.name}</li>
+      //           <li>年齡：{props.age}</li>
+      //           <li>性別：{props.sex}</li>
+      //         </ul>
+      //   )
+      // }
+      // es6組件
+      class Person extends React.Component {
+        render() {
+          return (
+            <ul>
+              <li>姓名：{this.props.name}</li>
+              <li>年齡：{this.props.age}</li>
+              <li>性別：{this.props.sex}</li>
+            </ul>
+          );
+        }
+      }
+      // 指定屬性末任值
+      Person.defaultProps = {
+        sex: "男",
+        age: 18,
+      };
+      // 指定屬性值的類型和必要性，需要額外裝 prop-types
+      Person.propTypes = {
+        name: PropTypes.string.isRequired,
+        age: PropTypes.number,
+      };
+      // 2.渲染組件標籤
+      var p1 = {
+        name: "TOM",
+        age: 23,
+        sex: "女",
+      };
+
+      // ...的作用：
+      // 1.打包，
+      // function fn(...as){}     fn(1,2,3)
+      // 2.解包
+      // const arr1=[1,2,3]  const=[6,...ar1,9]
+      // console.log({...p1})
+      ReactDOM.render(<Person {...p1} />, document.getElementById("test1"));
+
+      // ReactDOM.render(
+      //   <Person name={p1.name} age={p1.age} sex={p1.sex} />,
+      //   document.getElementById("lesson4A")
+      // );
+      var p2 = {
+        name: "Jack",
+      };
+      ReactDOM.render(
+        <Person name={p2.name} age={20} />,
+        document.getElementById("test2")
+      );
+    </script>
+  </body>
+</html>

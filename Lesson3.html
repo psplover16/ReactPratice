@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="test1"></div>
+
+    <script type="text/babel">
+      class ComponentA extends React.Component {
+        // 創建初始狀態
+        constructor(props) {
+          super(props);
+          this.state = {
+            isLike: true,
+          };
+          //2.將新增方法中的this強制綁定為組件對象也可以寫到rendor,但效率低
+          this.handleClick = this.handleClick.bind(this);
+        }
+        // 1.新添加方法，this不是組件，是undefined
+        handleClick() {
+          // 讀狀態
+          const isLike = !this.state.isLike;
+          // 更新狀態
+          this.setState({
+            // isLike:!this.state.isLike
+            isLike,
+          });
+        }
+        // 重寫組件的方法
+        render() {
+          // 讀取狀態
+          const isLikeA = this.state.isLike;
+          // const { isLike } = this.state;
+          return <h2 onClick={this.handleClick}>{isLikeA ? "愛" : "不愛"}</h2>;
+        }
+      }
+      ReactDOM.render(<ComponentA />, document.getElementById("test1"));
+      // 1.
+    </script>
+  </body>
+</html>

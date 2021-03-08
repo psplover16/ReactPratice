@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="example"></div>
+
+    <script type="text/babel">
+      // Q:數據保存在哪個組件內??
+      // A:看數據是某個組件需要(給該組件)?還是某些組件需要(給共同父組件)?
+      //
+      // Q:需要再子組件中改變父組件的狀態
+      // A:子組件不能直接改變父組件的狀態，狀態在哪個組件，更新狀態的行為必須在該組件進行。
+      // 父組件定義函數，傳遞給子組件(function),子組件再調用
+      //
+      // 組件化流程:
+      // 1.拆分組件
+      // 2.實現靜態組件(只有靜態介面)
+      // 3.實現動態組件
+      //  3-1.實現初始化數據動態顯示
+      //  3-2.實現交互功能
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            todos: ["吃飯", "睡覺", "打咚咚"],
+          };
+          this.addTodo = this.addTodo.bind(this);
+        }
+        addTodo(todo) {
+          const { todos } = this.state;
+          todos.unshift(todo);
+          // 更新狀態
+          this.setState({ todos });
+        }
+        render() {
+          const { todos } = this.state;
+          return (
+            <div>
+              <h1>Simple TODO LIST</h1>
+              <Add count={todos.length} addTodo={this.addTodo}></Add>
+              <List todos={todos}></List>
+            </div>
+          );
+        }
+      }
+
+      class Add extends React.Component {
+        constructor(props) {
+          super(props);
+
+          this.add = this.add.bind(this);
+        }
+        add() {
+          const todo = this.todoInput.value.trim();
+          // trim()頭尾去空白
+          if (!todo) {
+            return;
+          }
+          this.props.addTodo(todo);
+          this.todoInput.value = "";
+        }
+        render() {
+          return (
+            <div>
+              <input type="text" ref={(input) => (this.todoInput = input)} />
+              <button onClick={this.add}>add #{this.props.count + 1}</button>
+            </div>
+          );
+        }
+      }
+      Add.propTypes = {
+        count: PropTypes.number.isRequired,
+        addTodo:PropTypes.func.isRequired
+      };
+      class List extends React.Component {
+        render() {
+          return (
+            <div>
+              <ul>
+                {this.props.todos.map((value, index) => (
+                  <li key={index}>{value}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+      }
+      List.propTypes = {
+        todos: PropTypes.array.isRequired,
+      };
+      ReactDOM.render(<App />, document.getElementById("example"));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+    integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+
+  <script type="text/babel">
+    // 受控組件:表單輸入數據能自動收集成狀態,代碼複雜，但不會碰到實體dom    
+    // 非受控組件：需要時才讀取表單輸入框中的數據
+    class LoginForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          pwd: "",
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+      }
+      handleSubmit(event) {
+        console.log(this.inputName.value);
+        console.log(this.state.pwd);
+        // 帳號是直接撈input的值。密碼是先把input得值存起來，再拿存起來的值
+        console.log(`帳號:${this.inputName.value}密碼:${this.state.pwd}`)
+        event.preventDefault();
+      }
+      handleChange(e) {
+        const pwd = e.target.value;
+        this.setState({ pwd });
+      }
+      render() {
+        return (
+          <form action="./test" onSubmit={this.handleSubmit}>
+            用戶名:
+            <input type="text" ref={(input) => (this.inputName = input)} />
+              密碼:
+            <input
+              type="password"
+              value={this.state.pwd}
+              onChange={this.handleChange}
+              placeholder="value可以不用"
+            />
+            <button type="submit">送出</button>
+          </form>
+        );
+      }
+    }
+    ReactDOM.render(<LoginForm />, document.getElementById("example"));
+  </script>
+</body>
+
+</html>

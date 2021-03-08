@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="test1"></div>
+    <div id="test2"></div>
+    <div id="test3"></div>
+    <!-- js寫法 -->
+    <script type="text/javascript">
+      const msg = "JS寫法";
+      const myId = "Abc";
+      // 創建虛擬dom
+      const vdom1 = React.createElement(
+        "h2",
+        { id: myId.toUpperCase() },
+        msg.toLowerCase()
+      );
+      // React.createElement("標籤名稱",{ 標籤屬性，JSON },標籤內容);
+      // 渲染dom
+      ReactDOM.render(vdom1, document.getElementById("test1"));
+    </script>
+
+    <!-- babel寫法 -->
+    <script type="text/babel">
+      const vdom2 = <h3 id={myId.toLowerCase()}>{msg.toUpperCase() + 1213}</h3>;
+      ReactDOM.render(vdom2, document.getElementById("test2"));
+    </script>
+
+    <!-- Array練習 -->
+    <script type="text/babel">
+      var testArray = [1, 2, 3, 4, 5, 6, 7, 8];
+      // const vdom3 = (
+      //   <ul>
+      //     {testArray.map(function (name, index) {
+      //       return <li key={index}>{name}</li>;
+      //     })}
+      //   </ul>
+      // );
+      const vdom3 = (
+        <ul>
+          {testArray.map((name, index) => (
+            <li key={index}>{name}</li>
+          ))}
+        </ul>
+      );
+      ReactDOM.render(vdom3, document.getElementById("test3"));
+    </script>
+  </body>
+</html>

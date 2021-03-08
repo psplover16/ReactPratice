@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="example"></div>
+
+    <script type="text/babel">
+      class Mycomponent extends React.Component {
+        constructor(props) {
+          super(props);
+          this.t1 = this.t1.bind(this);
+          this.t2 = this.t2.bind(this);
+          this.t3 = this.t3.bind(this);
+          this.State = {
+            aa: '失去焦點提示內容，當DOM目標與觸發事件同一標籤時可用',
+          };
+        }
+        t1() {
+          console.log(this.refs.content1.value);
+        }
+        t2() {
+          console.log(this.inputValue.value);
+        }
+        t3(aaa) {
+          console.log(aaa.target.value);
+        }
+
+        render() {
+          return (
+            <div>
+              <input type="text" ref="content1" />
+              <button onClick={this.t1}>簡單，但官方不推薦refs用法</button>
+              <input type="text" ref={(input) => (this.inputValue = input)} />
+              <button onClick={this.t2}>
+                較複雜，官方推薦項目(項目標籤 => this.自己宣告名稱 = 項目標籤){" "}
+              </button>
+              <input type="text" placeholder={this.State.aa} onBlur={this.t3}/>
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<Mycomponent />, document.getElementById("example"));
+    </script>
+  </body>
+</html>

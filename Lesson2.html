@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+      integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="test1"></div>
+    <div id="test2"></div>
+
+    <!-- 簡易組件,(沒有state的組件，效率較類組件高) -->
+    <script type="text/babel">
+      // 組件名字首大寫
+      function CompomentA() {
+        return <h1>我是簡易組件</h1>;
+      }
+      ReactDOM.render(<CompomentA />, document.getElementById("test1"));
+    </script>
+
+    <!-- 複雜組件 -->
+    <script type="text/babel">
+      class CompomentB extends React.Component {
+        render() {
+          return <h1>我是類組件(es6 類組件)</h1>;
+        }
+      }
+      ReactDOM.render(<CompomentB />, document.getElementById("test2"));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+    integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+  <!-- git API -->
+  <!-- https://docs.github.com/en/rest/reference/search#search-repositories -->
+  <script type="text/babel">
+    class MostSrarRepo extends React.Component {
+      state = {
+        repoName: "",
+        repoUrl: "",
+      }
+      componentDidMount() {
+        const url = "https://api.github.com/search/repositories?q=" + this.props.searchItem + "&sort=stars";
+        // axios.get(url, {
+        //   // 塞json,你要傳的資料
+        // }).then(
+        //   response => {
+        //     const result = response.data
+        //     console.log(response)
+        //     const { name, html_url } = result.items[0]
+        //     // 
+        //     this.setState({
+        //       repoName: name,
+        //       repoUrl: html_url
+        //     })
+        //   }
+        // ).catch(error => {
+        //   console.log(error.response)
+        //   alert(error.message)
+        // })    
+        fetch(url).then(
+          response => {
+            return response.json()
+          }
+        ).then(data => {
+          console.log(data)
+          const { name, html_url } = data.items[0]
+          // 
+          this.setState({
+            repoName: name,
+            repoUrl: html_url
+          })
+        }).catch(error => {
+          console.log(error)
+          console.log(error.response)
+          console.log(error.message)
+        })
+        // 
+      }
+      render() {
+        const { repoName, repoUrl } = this.state
+        if (!repoName) {
+          return <h2>Loading...</h2>
+        } else {
+          return <h2>Most start repo is <a href={repoUrl}>{repoName}</a></h2>
+        }
+      }
+    }
+    ReactDOM.render(<MostSrarRepo searchItem="發大財" />, document.getElementById("example"))
+  </script>
+</body>
+
+</html>

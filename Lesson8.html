@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.7.2/prop-types.min.js"
+    integrity="sha512-ssNhh7jlzc+K93ckIlSXFHHz6fSFv0l619WOv8xbFNRbFOujbasb42LVMOggDrQR1ScJncoWb+KAJx1uF3ipjw=="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div id="example"></div>
+
+  <script type="text/babel">
+    // 生命週期流程
+    // 1.第一次初始化渲染:ReactDOM.render()  //第一次跑一次
+    //  *constructor():創建初始化state
+    //  *componentWillMount():將要插入回調
+    // **render(): 用於插入虛擬DOM回調
+    //***componentDidMount(): 已經插入回調,主要用於開啟監聽/發送ajax請求
+    // 2.每次更新state:this.setState()  //只要更新就會跑一次
+    //  *componentWillUpdate():將要更新回調
+    // **render():更新(重新渲染)
+    //  *componentDidUpdate():已經更新回調
+    // 3.移除組件:ReactDOM.unmountComponentAtNode(containdeDOM)  //只會跑一次
+    //***componentWillUnmount():組件將要被移除回調。做一些收尾的工作。如清理定時器
+    class Life extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = {
+          aa: 1,
+          opacity: 1
+        }
+        this.destroyComponent = this.destroyComponent.bind(this)
+      }
+      destroyComponent() {
+        ReactDOM.unmountComponentAtNode(document.getElementById("example"))
+      }
+      // 組件將要掛載
+      componentWillMount() {
+        console.log("componentWillMount")
+      }
+      // 組件掛載後
+      componentDidMount() {
+        console.log("componentDidMount")
+        // 把interval塞進全局變量或是該組件內
+        this.IntervalId = setInterval(
+          // 箭頭函數this沒有問題
+          function () {
+            // () => {
+            // 第一種
+            console.log("定時器更新")
+            let opacity = this.state.opacity * 1000;
+            if (opacity == 0) {
+              opacity = 1
+            } else {
+              opacity = (opacity - 100) / 1000
+            }
+            this.setState({
+              opacity: opacity
+            })
+            // 第二種
+            // if (this.state.opacity == 0) {
+            //   this.setState({
+            //     opacity: 1
+            //   })
+            // } else {
+            //   this.setState({
+            //     opacity: (this.state.opacity * 1000 - 100) / 1000
+            //   })
+            // }
+
+          }
+            .bind(this) //普通函式要額外綁定，讓this指向組件
+          , 200);
+      }
+      // 組件將更新
+      componentWillUpdate() {
+        console.log("componentWillUpdate")
+      }
+      // 組件已更新
+      componentDidUpdate(){
+        console.log("componentDidUpdate")
+      }
+      // 組件將被卸載
+      componentWillUnmount() {
+        console.log("componentWillUnmount")
+        clearInterval(this.IntervalId)
+      }
+
+      render() {
+        // 狀態更新，就會跑一次render
+        console.log("render()")
+        return (
+          // {} {{}} 外圍大{}表示裡面要寫JS代碼而不是標籤，裡面{}表示JS的對象
+          <div>
+            <h2 style={{ opacity: this.state.aa }}>{this.props.lifeMsg}</h2>
+            <h2 style={this.state}>{this.props.lifeMsg}</h2>
+            <button onClick={this.destroyComponent}>不活了</button>
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<Life lifeMsg="they hot" />, document.getElementById("example"));
+  </script>
+</body>
+
+</html>
